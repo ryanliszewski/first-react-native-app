@@ -28,10 +28,9 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 200,
     flex: 1,
+    backgroundColor: '#D8C0D8',
     padding: 10,
-    
   },
   
   scrollViewContainer: {
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
   },
 
   smallImage: {
+    flexDirection:'row',
     height: 150,
     width: 150,
     borderColor: '#483048',
