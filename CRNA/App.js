@@ -1,7 +1,24 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Button } from 'react-native';
 
 export default class App extends React.Component {
+  
+  constructor(props){
+    super(props);
+    this.state = {
+      backgroundColor: '#303030'
+    };
+  }
+ 
+  handlePress = () => {
+
+    const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+
+    this.setState({
+      backgroundColor: randomColor
+    });
+  };
+
   render() {
     return (
       <ScrollView style={styles.scrollViewContainer} >
@@ -11,7 +28,16 @@ export default class App extends React.Component {
             <Image source={require('./assets/Prince.png')} style={styles.smallImage}/>
             <Image source={require('./assets/Prince.png')} style={styles.smallImage}/>
           </View>
-
+          <View 
+            style={styles.toggleContainer}
+            backgroundColor={this.state.backgroundColor}
+          >
+            <Button 
+                title="Change the background color"
+                style={styles.toggleButton}
+                onPress={this.handlePress}
+              />
+          </View> 
 
       </ScrollView>
     );
@@ -20,10 +46,19 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
- 
     flexDirection: 'column',
     paddingTop: 50,
   },
+
+  toggleContainer: {
+    height: 300,
+    alignContent: 'center',
+    justifyContent: 'center'
+  },
+
+  toggleButton: {
+  },
+
 
   imageContainer: {
     flexDirection: 'row',
@@ -35,6 +70,7 @@ const styles = StyleSheet.create({
   
   scrollViewContainer: {
     backgroundColor: '#604860',
+
   },
 
   smallImage: {
