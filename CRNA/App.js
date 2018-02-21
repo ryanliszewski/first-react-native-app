@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Button, FlatList, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Button, FlatList, TextInput, Alert } from 'react-native';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
 
@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       backgroundColor: '#303030',
-      phrase: ''
+      phrase: '',
     };
   }
  
@@ -19,22 +19,36 @@ export default class App extends React.Component {
 
     this.setState({
       backgroundColor: randomColor,
-      
     });
   };
 
-  handleChange = () => {
-    
-    this.state.phrase = {phrase: event.target.value}
-  }
-
   handleSubmit = () => {
     const { phrase } = this.state
-
-    if(phrase === 'react'){
-      console.log(success)
+    
+    if(phrase === 'react' || phrase === 'React'){
+      Alert.alert(
+        'Success',
+        'You knew that this was react ;)',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false })
     }
   }
+
+  renderSeperator = () => {
+    return(
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          marginLeft: '14%',
+          backgroundColor: '#000'
+        }}
+      />
+    );
+  }
+
 
   render() {
     return (
@@ -51,6 +65,7 @@ export default class App extends React.Component {
               style={styles.smallImage}
             />
           </View>
+
           <View 
             style={styles.toggleContainer}
             backgroundColor={this.state.backgroundColor}
@@ -66,18 +81,21 @@ export default class App extends React.Component {
             <TextInput
               style={styles.phraseInput}
               placeholder="Enter a secret phrase"
+              placeholderTextColor='#fff'
               value={this.state.phrase}
-              onChange={this.handleChange.bind(this)}
-              onKeyPress={this.hand}
+              onChangeText={(text) => this.setState({phrase: text})}
+              onSubmitEditing={this.handleSubmit}
             />
-            
-
           </View>
         
           <FlatList
             style={styles.list}
             data={COMMUNITY_MEMBERS}
+            containerStyle={{ borderBottomWidth: 0 }}
+            ItemSeperatorComponent={this.renderSeperator}
+            removeClippedSubviews={true}
             renderItem={ ({item, separators}) => (
+            
               <View style={styles.itemContainer}>
                 
               <View style={styles.imageNameContainer}>
@@ -107,19 +125,30 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
     list: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#fff',
   },
 
   secretContainer:{
-    height: 200,
-    
+    flex: .25,
+    alignContent: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+
+  phraseInput: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#fff',
+    padding: 10,
+    height: 60,
+    color: '#fff'
   },
 
   toggleContainer: {
     height: 300,
     alignContent: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   toggleButton: {
@@ -127,13 +156,15 @@ const styles = StyleSheet.create({
 
   imageNameContainer:{
     flexDirection: 'row',
+    padding: 5,
   },
 
   itemContainer: {
-    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
+    borderBottomWidth: 1,
+    borderColor:'#000'
   },
 
   textNameContainer: {
@@ -143,17 +174,20 @@ const styles = StyleSheet.create({
 
   textGitContainer: {
     justifyContent: 'center',
-    
+    padding: 5,
   },
 
   itemName: {
     fontSize: 15,
     backgroundColor:'#fff',
-    padding: 0,
+    padding: 5,
+    fontWeight:'bold',
+    fontFamily: 'Arial'
   },
 
   itemGitName:{
     fontSize: 10,
+    fontFamily: 'Arial',
     alignContent: 'flex-end',
   },
 
