@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Button, FlatList, TextInput } from 'react-native';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
 
@@ -9,7 +9,8 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      backgroundColor: '#303030'
+      backgroundColor: '#303030',
+      phrase: ''
     };
   }
  
@@ -17,9 +18,23 @@ export default class App extends React.Component {
     const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
     this.setState({
-      backgroundColor: randomColor
+      backgroundColor: randomColor,
+      
     });
   };
+
+  handleChange = () => {
+    
+    this.state.phrase = {phrase: event.target.value}
+  }
+
+  handleSubmit = () => {
+    const { phrase } = this.state
+
+    if(phrase === 'react'){
+      console.log(success)
+    }
+  }
 
   render() {
     return (
@@ -46,24 +61,42 @@ export default class App extends React.Component {
                 onPress={this.handlePress}
               />
           </View> 
+
+          <View style={styles.secretContainer}>
+            <TextInput
+              style={styles.phraseInput}
+              placeholder="Enter a secret phrase"
+              value={this.state.phrase}
+              onChange={this.handleChange.bind(this)}
+              onKeyPress={this.hand}
+            />
+            
+
+          </View>
         
           <FlatList
             style={styles.list}
             data={COMMUNITY_MEMBERS}
             renderItem={ ({item, separators}) => (
               <View style={styles.itemContainer}>
+                
+              <View style={styles.imageNameContainer}>
                 <Image 
                   source={{uri: item.image}} 
                   style={
-                    { width: 60, 
+                    { 
+                      width: 60, 
                       height: 60,
                       borderRadius: 30
                     }}
                 />
-                
+                <View style={styles.textNameContainer}>
                   <Text style={styles.itemName}> {item.name} </Text>
-                  <Text style={styles.itemGitName}> {item.github_username} </Text>
-                
+                </View>
+              </View>
+                  <View style={styles.textGitContainer}>
+                    <Text style={styles.itemGitName}> {item.github_username} </Text>
+                  </View>
               </View>
             )}
           />
@@ -74,8 +107,13 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
     list: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#fff',
+  },
+
+  secretContainer:{
+    height: 200,
+    
   },
 
   toggleContainer: {
@@ -87,6 +125,10 @@ const styles = StyleSheet.create({
   toggleButton: {
   },
 
+  imageNameContainer:{
+    flexDirection: 'row',
+  },
+
   itemContainer: {
     padding: 10,
     flexDirection: 'row',
@@ -94,15 +136,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  itemTextContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+  textNameContainer: {
+    justifyContent: 'center',
+
+  },
+
+  textGitContainer: {
+    justifyContent: 'center',
+    
   },
 
   itemName: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    flex: 1,
     fontSize: 15,
     backgroundColor:'#fff',
     padding: 0,
@@ -110,6 +154,7 @@ const styles = StyleSheet.create({
 
   itemGitName:{
     fontSize: 10,
+    alignContent: 'flex-end',
   },
 
   imageContainer: {
