@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Button, FlatList, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert } from 'react-native';
+import { Button } from 'react-native-elements';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
 
@@ -71,9 +72,13 @@ export default class App extends React.Component {
             backgroundColor={this.state.backgroundColor}
           >
             <Button 
+                raised 
+                icon={{name: 'fingerprint'}}
                 title="Change the background color"
                 style={styles.toggleButton}
                 onPress={this.handlePress}
+                borderRadius= '10'
+                backgroundColor= '#604860'
               />
           </View> 
 
@@ -146,7 +151,7 @@ const styles = StyleSheet.create({
   },
 
   toggleContainer: {
-    height: 300,
+    flex: .5,
     alignContent: 'center',
     justifyContent: 'center',
   },
