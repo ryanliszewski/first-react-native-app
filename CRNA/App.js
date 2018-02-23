@@ -13,6 +13,8 @@ export default class App extends React.Component {
       backgroundColor: '#303030',
       phrase: '',
     };
+
+ 
   }
  
   handlePress = () => {
@@ -23,11 +25,11 @@ export default class App extends React.Component {
     });
   };
 
-  handleTouch = (gitUsername) => {
+  handleTouch = () => {
     return (
       <WebView
-        source={{uri: 'www.github.com/' + gitUsername}}
-        
+        source={{uri: 'https://www.github.com/'}}
+        styles={{flex: 1}}
       />
     );
   }
@@ -59,8 +61,6 @@ export default class App extends React.Component {
     );
   }
 
-
-
   render() {
     return (
       <ScrollView style={styles.scrollViewContainer} >
@@ -81,15 +81,17 @@ export default class App extends React.Component {
             style={styles.toggleContainer}
             backgroundColor={this.state.backgroundColor}
           >
+          <TouchableHighlight onPress={this.handleTouch.bind(this)}>
             <Button 
                 raised 
                 icon={{name: 'fingerprint'}}
                 title="Change the background color"
                 style={styles.toggleButton}
-                onPress={this.handlePress}
+                onPress={this.handleTouch}
                 borderRadius= '10'
                 backgroundColor= '#604860'
               />
+              </TouchableHighlight>
           </View> 
 
           <View style={styles.secretContainer}>
@@ -111,26 +113,27 @@ export default class App extends React.Component {
             removeClippedSubviews={true}
             
             renderItem={ ({item, separators}) => (
-            <TouchableHighlight onPress={this.handleTouch(item.github_username)}>
+            
+            <TouchableHighlight onPress={this.handleTouch.bind(this)}>
               <View style={styles.itemContainer}> 
-              <View style={styles.imageNameContainer}>
-                <Image 
-                  source={{uri: item.image}} 
-                  style={
-                    { 
-                      width: 60, 
-                      height: 60,
-                      borderRadius: 30
-                    }}
-                />
-                <View style={styles.textNameContainer}>
-                  <Text style={styles.itemName}> {item.name} </Text>
-                </View>
-              </View>
-                  <View style={styles.textGitContainer}>
-                    <Text style={styles.itemGitName}> {item.github_username} </Text>
+                <View style={styles.imageNameContainer}>
+                  <Image 
+                    source={{uri: item.image}} 
+                    style={
+                      { 
+                        width: 60, 
+                        height: 60,
+                        borderRadius: 30
+                      }}
+                  />
+                  <View style={styles.textNameContainer}>
+                    <Text style={styles.itemName}> {item.name} </Text>
                   </View>
-              </View>
+                </View>
+                    <View style={styles.textGitContainer}>
+                      <Text style={styles.itemGitName}> {item.github_username} </Text>
+                    </View>
+                </View>
             </TouchableHighlight>
             )}
           />
