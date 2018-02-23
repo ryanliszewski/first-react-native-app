@@ -53,14 +53,15 @@ export default class App extends React.Component {
 
   renderWebView() {
     return (
+     <View style={{height: '100%'}}>
       <WebView
         source={{uri: 'https://www.github.com/' + this.state.githubUsername}}
         scalesPageToFit
-        scrollEnabled={false}
+        automaticallyAdjustContentInsets={true}
         style={{
-          height: 400
         }}
       />
+    </View> 
     );
   }
 
@@ -235,6 +236,7 @@ const styles = StyleSheet.create({
   
   scrollViewContainer: {
     backgroundColor: '#604860',
+    flexGrow: 1, 
   },
 
   smallImage: {
