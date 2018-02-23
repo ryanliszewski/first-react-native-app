@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert, TouchableHighlight, WebView } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
@@ -22,6 +22,15 @@ export default class App extends React.Component {
       backgroundColor: randomColor,
     });
   };
+
+  handleTouch = (gitUsername) => {
+    return (
+      <WebView
+        source={{uri: 'www.github.com/' + gitUsername}}
+        
+      />
+    );
+  }
 
   handleSubmit = () => {
     const { phrase } = this.state
@@ -49,6 +58,7 @@ export default class App extends React.Component {
       />
     );
   }
+
 
 
   render() {
@@ -99,10 +109,10 @@ export default class App extends React.Component {
             containerStyle={{ borderBottomWidth: 0 }}
             ItemSeperatorComponent={this.renderSeperator}
             removeClippedSubviews={true}
-            renderItem={ ({item, separators}) => (
             
-              <View style={styles.itemContainer}>
-                
+            renderItem={ ({item, separators}) => (
+            <TouchableHighlight onPress={this.handleTouch(item.github_username)}>
+              <View style={styles.itemContainer}> 
               <View style={styles.imageNameContainer}>
                 <Image 
                   source={{uri: item.image}} 
@@ -121,6 +131,7 @@ export default class App extends React.Component {
                     <Text style={styles.itemGitName}> {item.github_username} </Text>
                   </View>
               </View>
+            </TouchableHighlight>
             )}
           />
       </ScrollView>
