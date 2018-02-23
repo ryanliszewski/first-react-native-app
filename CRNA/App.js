@@ -11,10 +11,9 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       backgroundColor: '#303030',
-      phrase: '',
+      showWebView: false,
+      githubUsername: ''
     };
-
- 
   }
  
   handlePress = () => {
@@ -24,15 +23,6 @@ export default class App extends React.Component {
       backgroundColor: randomColor,
     });
   };
-
-  handleTouch = () => {
-    return (
-      <WebView
-        source={{uri: 'https://www.github.com/'}}
-        styles={{flex: 1}}
-      />
-    );
-  }
 
   handleSubmit = () => {
     const { phrase } = this.state
@@ -61,8 +51,23 @@ export default class App extends React.Component {
     );
   }
 
+  renderWebView() {
+    return (
+      <WebView
+        source={{uri: 'https://www.github.com/' + this.state.githubUsername}}
+        scalesPageToFit
+        scrollEnabled={false}
+        style={{
+          height: 400
+        }}
+      />
+    );
+  }
+
   render() {
     return (
+      <View style={styles.container}> 
+      {this.state.showWebView && this.renderWebView()}
       <ScrollView style={styles.scrollViewContainer} >
         
           <Image source={require('./assets/Prince.png')} style={styles.largeImage}/>
@@ -81,17 +86,15 @@ export default class App extends React.Component {
             style={styles.toggleContainer}
             backgroundColor={this.state.backgroundColor}
           >
-          <TouchableHighlight onPress={this.handleTouch.bind(this)}>
             <Button 
                 raised 
                 icon={{name: 'fingerprint'}}
                 title="Change the background color"
                 style={styles.toggleButton}
-                onPress={this.handleTouch}
+                onPress={this.handlePress}
                 borderRadius= '10'
                 backgroundColor= '#604860'
               />
-              </TouchableHighlight>
           </View> 
 
           <View style={styles.secretContainer}>
@@ -111,10 +114,16 @@ export default class App extends React.Component {
             containerStyle={{ borderBottomWidth: 0 }}
             ItemSeperatorComponent={this.renderSeperator}
             removeClippedSubviews={true}
+           
             
             renderItem={ ({item, separators}) => (
-            
-            <TouchableHighlight onPress={this.handleTouch.bind(this)}>
+            <TouchableHighlight onPress={() => this.setState(
+              {
+                showWebView: true,
+                githubUsername: item.github_username
+              }
+            )}>
+              
               <View style={styles.itemContainer}> 
                 <View style={styles.imageNameContainer}>
                   <Image 
@@ -136,13 +145,19 @@ export default class App extends React.Component {
                 </View>
             </TouchableHighlight>
             )}
-          />
+          />          
       </ScrollView>
+    </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+    
+  container: {
+    flex: 5,
+  },
+  
     list: {
     flexGrow: 1,
     backgroundColor: '#fff',
@@ -220,8 +235,6 @@ const styles = StyleSheet.create({
   
   scrollViewContainer: {
     backgroundColor: '#604860',
-    flexGrow: 1, 
-    flex: 1,
   },
 
   smallImage: {
