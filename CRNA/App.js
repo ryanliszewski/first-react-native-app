@@ -1,8 +1,62 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert, TouchableHighlight, WebView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert, TouchableHighlight, WebView, Animated, Switch, Platform } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
+
+const GITHUB_URL = 'https://www.github.com/';
+
+
+class FadeInView extends React.Component {
+  
+  state = {
+    fadeInAnim: new Animated.Value(0),
+    isVisible: false, 
+  }
+  getInitialState(){
+    return { fadeInAnim: new Animated.Value(0) };
+  }
+
+  componentDidMount() {
+    let { isVisible } = this.state;
+
+
+    if(!isVisible){
+      Animated.timing (
+        this.state.fadeInAnim, 
+        {
+          toValue: 1, 
+          duration: 10000,
+        }
+      ).start()
+    } else {
+      Animated.timing  (
+        this.state.fadeOutAnim,
+        {
+          toValue: 0, 
+          duration: 1000,
+        }
+      )
+    }
+
+  }
+
+  render() {
+    let { fadeInAnim } = this.state;
+
+    return (
+      <Animated.View
+      style={{
+        ...this.props.style,
+        opacity: fadeInAnim,
+        }}
+      >
+        {this.props.children}
+      </Animated.View>
+    );
+
+  }
+}
 
 
 export default class App extends React.Component {
@@ -12,10 +66,11 @@ export default class App extends React.Component {
     this.state = {
       backgroundColor: '#303030',
       showWebView: false,
-      githubUsername: ''
+      githubUsername: '',
+      switchOn: true,
     };
   }
- 
+
   handlePress = () => {
     const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
@@ -55,7 +110,7 @@ export default class App extends React.Component {
     return (
      <View style={{height: '100%'}}>
       <WebView
-        source={{uri: 'https://www.github.com/' + this.state.githubUsername}}
+        source={{uri: GITHUB_URL + this.state.githubUsername}}
         scalesPageToFit
         automaticallyAdjustContentInsets={true}
         style={{
@@ -108,7 +163,17 @@ export default class App extends React.Component {
               onSubmitEditing={this.handleSubmit}
             />
           </View>
+
+          <View style={styles.switchContainer}>
+            <Text style={{color: '#fff'}}> Display Student List </Text> 
+            <Switch
+              onValueChange={(value) => this.setState({switchOn: value})}
+              value={this.state.switchOn}
+            />
+
+          </View> 
         
+          <FadeInView style={{flex: 1}}>
           <FlatList
             style={styles.list}
             data={COMMUNITY_MEMBERS}
@@ -116,7 +181,6 @@ export default class App extends React.Component {
             ItemSeperatorComponent={this.renderSeperator}
             removeClippedSubviews={true}
            
-            
             renderItem={ ({item, separators}) => (
             <TouchableHighlight onPress={() => this.setState(
               {
@@ -146,7 +210,9 @@ export default class App extends React.Component {
                 </View>
             </TouchableHighlight>
             )}
-          />          
+          />        
+
+          </FadeInView>  
       </ScrollView>
     </View>
     );
@@ -154,21 +220,19 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    
-  container: {
-    flex: 5,
-  },
   
     list: {
     flexGrow: 1,
+    flex: 1,
     backgroundColor: '#fff',
   },
 
   secretContainer:{
-    flex: .25,
+    flex: .1,
     alignContent: 'center',
     justifyContent: 'center',
     padding: 20,
+    height: 200,
   },
 
   phraseInput: {
@@ -181,7 +245,8 @@ const styles = StyleSheet.create({
   },
 
   toggleContainer: {
-    flex: .5,
+    height: 300,
+    flex: 5,
     alignContent: 'center',
     justifyContent: 'center',
   },
@@ -248,8 +313,16 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
 
+  switchContainer: {
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    flexDirection: 'row',
+    padding: 10,
+    backgroundColor: '#9C659E',
+  },
+
   largeImage: {
-    height: 300,
+    height: Platform.OS === 'ios' ? 200 : 100,
     width: 400,
     flexDirection: 'row',
   },
