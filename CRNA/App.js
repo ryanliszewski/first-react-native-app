@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert, TouchableHighlight, WebView, Animated, Switch, Platform, Keyboard} from 'react-native';
-import { Button, Header } from 'react-native-elements';
+import { Button, Header, Icon } from 'react-native-elements';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
 
@@ -80,17 +80,35 @@ export default class App extends React.Component {
   };
 
   handleSubmit = () => {
-    const { phrase } = this.state
+    const { phrase } = this.state;
+    var subMessage; 
+    var message; 
     
     if(phrase === 'react' || phrase === 'React'){
-      Alert.alert(
-        'Success',
-        'You knew that this was react ;)',
-        [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false })
-    }
+      message = 'Success';
+      subMessage = 'You knew that this was react ;)';
+    } else {
+      message = 'Falure';
+      subMessage = 'Type in what React Native is built on ;)';
+    } 
+
+    Alert.alert(
+      message,
+      subMessage,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false })
+  }
+
+  renderBackIcon = () => {
+    return(
+      <Icon 
+        name='close'
+        color='#fff'
+        onPress={() => this.setState({showWebView: false})}
+      />
+    );
   }
 
   renderSeperator = () => {
@@ -116,8 +134,8 @@ export default class App extends React.Component {
       }>
       
       <Header
-        leftComponent={
-          {icon: 'close', color: '#fff'} } 
+        leftComponent={this.renderBackIcon()} 
+        style={styles.header}
       />
 
       <WebView
@@ -226,7 +244,6 @@ export default class App extends React.Component {
             </TouchableHighlight>
             )}
           />        
-
           </FadeInView>  
       </ScrollView>
     </View>
@@ -248,6 +265,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     height: 200,
+  },
+
+  header: {
+    paddingTop: 20,
   },
 
   phraseInput: {
