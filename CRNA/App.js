@@ -165,7 +165,7 @@ export default class App extends React.Component {
           </View>
 
           <View style={styles.switchContainer}>
-            <Text style={{color: '#fff'}}> Display Student List </Text> 
+            <Text style={styles.switchContainerText}> Display Student List </Text> 
             <Switch
               onValueChange={(value) => this.setState({switchOn: value})}
               value={this.state.switchOn}
@@ -326,4 +326,10 @@ const styles = StyleSheet.create({
     width: 400,
     flexDirection: 'row',
   },
+
+  switchContainerText: {
+    fontWeight:'bold',
+    fontFamily: 'Arial',
+    fontSize: 24,
+  }
 });
