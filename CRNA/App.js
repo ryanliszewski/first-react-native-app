@@ -114,6 +114,7 @@ export default class App extends React.Component {
         scalesPageToFit
         automaticallyAdjustContentInsets={true}
         style={{
+          paddingTop: 20,
         }}
       />
     </View> 
@@ -124,7 +125,10 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}> 
       {this.state.showWebView && this.renderWebView()}
-      <ScrollView style={styles.scrollViewContainer} >
+      <ScrollView 
+        style={styles.scrollViewContainer} 
+        onPress={Keyboard.dismiss}
+      >
         
           <Image source={require('./assets/Prince.png')} style={styles.largeImage}/>
           <View style={styles.imageContainer}> 
