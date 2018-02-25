@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert, TouchableHighlight, WebView, Animated, Switch, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, TextInput, Alert, TouchableHighlight, WebView, Animated, Switch, Platform, Keyboard} from 'react-native';
+import { Button, Header } from 'react-native-elements';
 
 import { COMMUNITY_MEMBERS } from './assets/constants'
 
@@ -108,7 +108,18 @@ export default class App extends React.Component {
 
   renderWebView() {
     return (
-     <View style={{height: '100%'}}>
+     <View style=
+     {
+      {
+        height: '100%',
+      }
+      }>
+      
+      <Header
+        leftComponent={
+          {icon: 'close', color: '#fff'} } 
+      />
+
       <WebView
         source={{uri: GITHUB_URL + this.state.githubUsername}}
         scalesPageToFit
